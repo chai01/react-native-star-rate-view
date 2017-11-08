@@ -21,10 +21,6 @@ export const RateType = {
 
 Object.freeze(RateType);
 
-const  BackgroundStarImage=require('./backgroundStarImage.png');
-
-const  ForegroundStarImage=require('./foregroundStarImage.png');
-
 var StarView = props => {
         var imgs = [];
         let styles= {
@@ -61,17 +57,16 @@ export  class StarRateView extends React.Component{
 
     static props={
         rateStyle:PropTypes.style,
+        width:PropTypes.number.isRequired,
         numberStars:PropTypes.number.isRequired,
-        rateType:RateType,
-        foregroundStarImageSource:PropTypes.Image,
-        backgroundStarImageSource:PropTypes.Image,
+        rateType:RateType.isRequired,
+        foregroundStarImgSource:PropTypes.Image,
+        backgroundStarImgSource:PropTypes.Image,
         animationTimeInterval:PropTypes.number,
         finish:PropTypes.func
     }
     static defaultProps = {
         rateStyle: {height:100,width:100,flexDirection:'row',justifyContent: 'space-between'},
-        foregroundStarImageSource:ForegroundStarImage,
-        backgroundStarImageSource:BackgroundStarImage,
     }
     constructor(props){
         super(props);
@@ -81,9 +76,18 @@ export  class StarRateView extends React.Component{
             width:new Animated.Value(0)
         }
     }
+    getStyleObjectByStyleSheet=(styleSheet)=>{
+        let style;
+        if(!isNaN(styleSheet)){
+            style=StyleSheet.flatten(styleSheet)
+        }else
+        {
+            style=styleSheet;
+        }
+        return style;
 
+    }
     componentWillMount(){
-
             this._panResponder = PanResponder.create({
                 // Ask to be the responder:
                 onStartShouldSetPanResponder: (evt, gestureState) => true,
@@ -95,11 +99,12 @@ export  class StarRateView extends React.Component{
                     // The gesture has started. Show visual feedback so the user knows
                     // what is happening!
                     var locatoinPageX=evt.nativeEvent.pageX;
+                    let style=this.getStyleObjectByStyleSheet(this.props.rateStyle);
                     const handle = findNodeHandle(this._view);
                     UIManager.measure(handle, (x, y, width, height, pageX, pageY) => {
                         //console.log('handle,x,y,width,height,pagex,pagey',handle,x,y,width,height,pageX,pageY);
                         let pX=locatoinPageX-pageX;
-                        let realStarScore = pX / (this.props.rateStyle.width / this.props.numberStars);
+                        let realStarScore = pX / (style.width / this.props.numberStars);
                         let currentScore;
                         switch(this.props.rateType){
                             case RateType.WholeStar:{
@@ -130,7 +135,7 @@ export  class StarRateView extends React.Component{
                         Animated.timing(
                             this.state.width,
                             {
-                                toValue: currentScore/this.props.numberStars*this.props.rateStyle.width,
+                                toValue: currentScore/this.props.numberStars*style.width,
                                 duration: animationTimeInterval,
                                 useNativeDriver: false, // <-- 加上这一行
                             }
@@ -157,18 +162,18 @@ export  class StarRateView extends React.Component{
             });
         }
     render() {
+           let style=this.getStyleObjectByStyleSheet(this.props.rateStyle);
             return(
+                    <View ref={(view) => { this._view = view; }}{...this._panResponder.panHandlers}style={style} collapsable={false}>
 
-                    <View ref={(view) => { this._view = view; }}{...this._panResponder.panHandlers}style={this.props.rateStyle} collapsable={false}>
-
-                        <StarView  source={this.props.backgroundStarImageSource}
-                                   originalWidth={this.props.rateStyle.width}
-                                   rateStyle={{position:'absolute',left:0,top:0,width:this.props.rateStyle.width,height:this.props.rateStyle.height}}
+                        <StarView  source={this.props.backgroundStarImgSource}
+                                   originalWidth={style.width}
+                                   rateStyle={{position:'absolute',left:0,top:0,width:style.width,height:style.height}}
                                    numberStars={this.props.numberStars}/>
-                        <Animated.View style={{position:'absolute',left:0,top:0,width:this.state.width,height:this.props.rateStyle.height,overflow:'hidden'}}>
-                            <StarView  source={this.props.foregroundStarImageSource}
-                                       originalWidth={this.props.rateStyle.width}
-                                       rateStyle={{position:'absolute',left:0,top:0,width:this.state.currentScore/this.props.numberStars*this.props.rateStyle.width,height:this.props.rateStyle.height,overflow:'hidden'}}
+                        <Animated.View style={{position:'absolute',left:0,top:0,width:this.state.width,height:style.height,overflow:'hidden'}}>
+                            <StarView  source={this.props.foregroundStarImgSource}
+                                       originalWidth={style.width}
+                                       rateStyle={{position:'absolute',left:0,top:0,width:this.state.currentScore/this.props.numberStars*style.width,height:style.height,overflow:'hidden'}}
                                        numberStars={this.props.numberStars}/>
                         </Animated.View>
 

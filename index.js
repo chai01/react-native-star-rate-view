@@ -9,19 +9,40 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+    Image
 } from 'react-native';
 
 import {StarRateView,RateType}from'./src/StarRateView'
 
+const  BackgroundStarImage=require('./img/backgroundStarImage.png');
+
+const  ForegroundStarImage=require('./img/foregroundStarImage.png');
 
 export default class starRateView extends Component {
   render() {
     return (
         <View style={styles.container}>
-          <StarRateView rateStyle={{flexDirection:'row',marginLeft:0,marginTop:0,width:200,height:100}} numberStars={5} rateType={RateType.WholeStar} animationTimeInterval={200} finish={(score)=>{console.log('score',score)}}/>
-          <StarRateView rateStyle={{flexDirection:'row',marginLeft:0,marginTop:50,width:200,height:100}} numberStars={5} rateType={RateType.HalfStar} finish={(score)=>{console.log('score',score)}}/>
-          <StarRateView rateStyle={{flexDirection:'row',marginLeft:0,marginTop:50,width:200,height:100}} numberStars={5} rateType={RateType.IncompleteStar}  animationTimeInterval={100} finish={(score)=>{console.log('score',score)}}/>
+          <StarRateView rateStyle={styles.firstStar}
+                        foregroundStarImgSource={ForegroundStarImage}
+                        backgroundStarImgSource={BackgroundStarImage}
+                        numberStars={5}
+                        rateType={RateType.WholeStar}
+                        animationTimeInterval={200}
+                        finish={(score)=>{console.log('score',score)}}/>
+          <StarRateView rateStyle={styles.secondStar}
+                        foregroundStarImgSource={ForegroundStarImage}
+                        backgroundStarImgSource={BackgroundStarImage}
+                        numberStars={5}
+                        rateType={RateType.HalfStar}
+                        finish={(score)=>{console.log('score',score)}}/>
+          <StarRateView rateStyle={styles.thirdStar}
+                        foregroundStarImgSource={ForegroundStarImage}
+                        backgroundStarImgSource={BackgroundStarImage}
+                        numberStars={5}
+                        rateType={RateType.IncompleteStar}
+                        animationTimeInterval={100}
+                        finish={(score)=>{console.log('score',score)}}/>
         </View>
 
     );
@@ -35,16 +56,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  firstStar:{
+      flexDirection:'row',
+      marginLeft:0,
+      marginTop:0,
+      width:200,
+      height:100
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    secondStar:{
+        flexDirection:'row',
+        marginLeft:0,
+        marginTop:50,
+        width:200,
+        height:100
+    },
+    thirdStar:{
+        flexDirection:'row',
+        marginLeft:0,
+        marginTop:50,
+        width:200,
+        height:100
+    }
 });
 
 AppRegistry.registerComponent('starRateView', () => starRateView);

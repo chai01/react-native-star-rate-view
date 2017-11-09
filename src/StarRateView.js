@@ -57,7 +57,6 @@ export  class StarRateView extends React.Component{
 
     static props={
         rateStyle:PropTypes.style,
-        width:PropTypes.number.isRequired,
         numberStars:PropTypes.number.isRequired,
         rateType:RateType.isRequired,
         foregroundStarImgSource:PropTypes.Image,
@@ -65,17 +64,11 @@ export  class StarRateView extends React.Component{
         animationTimeInterval:PropTypes.number,
         finish:PropTypes.func
     }
+
     static defaultProps = {
-        rateStyle: {height:100,width:100,flexDirection:'row',justifyContent: 'space-between'},
+        rateStyle: {height:50,width:100,flexDirection:'row',justifyContent: 'space-between'},
     }
-    constructor(props){
-        super(props);
-        this.state={
-            numberStars:0,
-            currentScore:0,
-            width:new Animated.Value(0)
-        }
-    }
+
     getStyleObjectByStyleSheet=(styleSheet)=>{
         let style;
         if(!isNaN(styleSheet)){
@@ -86,6 +79,15 @@ export  class StarRateView extends React.Component{
         }
         return style;
 
+    }
+
+    constructor(props){
+        super(props);
+        this.state={
+            numberStars:0,
+            currentScore:0,
+            width:new Animated.Value(0)
+        }
     }
     componentWillMount(){
             this._panResponder = PanResponder.create({

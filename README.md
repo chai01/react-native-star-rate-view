@@ -19,4 +19,4 @@ backgroundStarImgSource:   become a background image   eg:require('./img/backg
 
 animationTimeInterval:      Animation time  if you don't set,default value is 0 with no animation display
 
-finish                      score callback, get a score    eg:finish={(score)=>{console.log('score',score)}}     
+finish:                      score callback, get a score    eg:finish={(score)=>{console.log('score',score)}}     
